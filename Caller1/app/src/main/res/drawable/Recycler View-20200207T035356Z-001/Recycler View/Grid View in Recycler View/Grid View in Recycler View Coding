@@ -1,0 +1,197 @@
+GridView in Recycler View
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 1:
+Create a new project and name it has GridViewInRecyclerView
+/////Install the Dependencies//////
+
+Note: Add some Images in the Drawable folder 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 2: Content in the avtivity_main xml file
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:orientation="horizontal">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 3:Create a new xml file(in layout folder) and name in as recyclerview_custom_layout
+
+Content inside the recyclerview_custom_layout.xml file
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivPlace"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="5dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_1"/>
+
+</LinearLayout>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 4:Content in the Main_Activity.class file
+
+package com.example.gridviewwithrecyclerview;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+    RecyclerView mRecyclerView;
+    int[] mPlaceList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
+
+        mPlaceList = new int[]{R.drawable.image_1, R.drawable.image_2, R.drawable.image_3,
+                R.drawable.image_4, R.drawable.image_5, R.drawable.image_6, R.drawable.image_7,
+                R.drawable.image_8, R.drawable.image_9, R.drawable.image_10, R.drawable.image_11,
+                R.drawable.image_12, R.drawable.image_13, R.drawable.image_14};
+
+        MyAdapter myAdapter = new MyAdapter(MainActivity.this, mPlaceList);
+        mRecyclerView.setAdapter(myAdapter);
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 5: Create a new java class and name it MyAdapter and make it extends with RecyclerView.Adapter<MyAdapter.PlaceViewHolder>
+/////Do the steps to create inner class, methods and extends inner class with recyclerView and constructor//////
+
+Content inside the MyAdapter.class file
+
+package com.example.gridviewwithrecyclerview;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.PlaceViewHolder> {
+    private Context mContext;
+    private int[] mPlaceList;
+
+    public MyAdapter(Context mContext, int[] mPlaceList) {
+        this.mContext = mContext;
+        this.mPlaceList = mPlaceList;
+    }
+
+    @NonNull
+    @Override
+    public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_custom_layout,
+                parent, false);
+        return new PlaceViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final PlaceViewHolder holder, int position) {
+        holder.mPlace.setImageResource(mPlaceList[position]);
+        holder.mPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent = new Intent(mContext, DetailActivity.class);
+                mIntent.putExtra("Image", mPlaceList[holder.getAdapterPosition()]);
+                mContext.startActivity(mIntent);
+
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mPlaceList.length;
+    }
+
+    public class PlaceViewHolder extends RecyclerView.ViewHolder {
+        ImageView mPlace;
+        public PlaceViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mPlace = itemView.findViewById(R.id.ivPlace);
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 6:Create a new Empty Activity and name it has DetailActivity
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 7:Content in the avtivity_details xml file
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context="com.example.gridviewwithrecyclerview.DetailActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"/>
+</LinearLayout>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 8:Content in the DetailActivity.class file
+
+package com.example.gridviewwithrecyclerview;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.ImageView;
+
+public class DetailActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        ImageView mPlace = findViewById(R.id.imageView);
+        Bundle mBundle = getIntent().getExtras();
+        if(mBundle != null){
+            mPlace.setImageResource(mBundle.getInt("Image"));
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Run The Application
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+

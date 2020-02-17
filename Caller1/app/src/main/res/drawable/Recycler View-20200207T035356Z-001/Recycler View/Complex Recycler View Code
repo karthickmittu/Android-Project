@@ -1,0 +1,264 @@
+Recycler view with Advaced settings
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 1:
+1)Create a New project with Empty Activity and name it as RecyclerViewExample2
+2)Add the implementation of Recycler View and Card View
+3)Add some Images in the drawable folder
+4)create a new drawable resource file for the shape of the capsule and name it shapecapsule
+
+//content inside the shape capsule//
+
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size android:height="40dp"
+        android:width="100dp" />
+    <solid android:color="@color/colorPrimary"/>
+    <corners
+        android:radius="50dp"/>
+</shape>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 2:
+Type the below Content in the MainAcitviy.xml file
+
+//Code//
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 3:
+Create datalist.xml file in the layout Folder
+Type the below Content in the data.xml file
+
+//code//
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:padding="10dp"
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="128dp"
+                android:src="@drawable/sh2"
+                android:scaleType="fitCenter"/>
+            <LinearLayout
+                android:paddingLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="Item Names"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/item_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Womens Dress"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="30dp"
+                android:text="$ price"
+                android:background="@drawable/shapecapsule"
+                android:gravity="center"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+</androidx.cardview.widget.CardView>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 4:
+Go to MainActivity.class file and Type the following code//
+//Code//
+
+public class MainActivity extends AppCompatActivity {
+
+    RecyclerView recyclerView;
+
+    ArrayList<ModelShopping> shoppingList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        recyclerView=findViewById(R.id.rv);
+        shoppingList=new ArrayList<>();
+        shoppingList.add(new ModelShopping(R.drawable.sh2,"Dress","Womens","$14"));
+        shoppingList.add(new ModelShopping(R.drawable.sh3,"Dress","Kid","$24"));
+        shoppingList.add(new ModelShopping(R.drawable.sh4,"Dress","Girl","$16"));
+        shoppingList.add(new ModelShopping(R.drawable.sh5,"Dress","Men","$15"));
+        shoppingList.add(new ModelShopping(R.drawable.sh6,"Shoe","Men","$18"));
+        shoppingList.add(new ModelShopping(R.drawable.sh7,"Shoe","Women","$17"));
+        shoppingList.add(new ModelShopping(R.drawable.sh2,"Dress","Womens","$14"));
+        shoppingList.add(new ModelShopping(R.drawable.sh3,"Dress","Kid","$24"));
+        shoppingList.add(new ModelShopping(R.drawable.sh4,"Dress","Girl","$16"));
+        shoppingList.add(new ModelShopping(R.drawable.sh5,"Dress","Men","$15"));
+        shoppingList.add(new ModelShopping(R.drawable.sh6,"Shoe","Men","$18"));
+        shoppingList.add(new ModelShopping(R.drawable.sh7,"Shoe","Women","$17"));
+
+        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        RecyclerView.LayoutManager rvLilayoutManager= layoutManager;
+
+        recyclerView.setLayoutManager(rvLilayoutManager);
+        ShoppingAdapter adapter=new ShoppingAdapter(this,shoppingList);
+        recyclerView.setAdapter(adapter);
+
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 5:
+Create a new .class file and name it has  ModelShopping.class and type the following code
+
+//code//
+public class ModelShopping
+{
+    private int image;
+    private String name,place,price;
+
+    public ModelShopping(int image, String name, String place, String price) {
+        this.image = image;
+        this.name = name;
+        this.place = place;
+        this.price = price;
+    }
+public int getImage() {
+        return image;
+    }
+ public void setImage(int image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 6:
+Create a new .class file and name it has  ShoppingAdapter.class and extend with RecyclerView.Adapter<ShoppingAdapter.ViewHolder>
+type the following code
+//code//
+
+public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHolder>{
+    private Context mContext;
+    private ArrayList<ModelShopping> mlist;
+
+    public ShoppingAdapter(Context mContext, ArrayList<ModelShopping> mlist)
+    {
+        this.mContext = mContext;
+        this.mlist = mlist;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        LayoutInflater layoutInflater=LayoutInflater.from(mContext);
+
+        View view=layoutInflater.inflate(R.layout.datalist,parent,false);
+        ViewHolder viewHolder=new ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    {
+        ModelShopping shoppingItem=mlist.get(position);
+
+        ImageView image=holder.item_image;
+        TextView name,place,price;
+        name=holder.item_name;
+        place=holder.item_place;
+        price=holder.item_price;
+
+        image.setImageResource(shoppingItem.getImage());
+        name.setText(shoppingItem.getName());
+        place.setText(shoppingItem.getPlace());
+        price.setText(shoppingItem.getPrice());
+
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return mlist.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
+        ImageView item_image;
+        TextView item_name,item_place,item_price;
+
+        public ViewHolder(@NonNull View itemView)
+        {
+            super(itemView);
+            item_image=itemView.findViewById(R.id.item_image);
+            item_name=itemView.findViewById(R.id.item_name);
+            item_place=itemView.findViewById(R.id.item_place);
+            item_price=itemView.findViewById(R.id.item_price);
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Run the Application
+
+
+
+

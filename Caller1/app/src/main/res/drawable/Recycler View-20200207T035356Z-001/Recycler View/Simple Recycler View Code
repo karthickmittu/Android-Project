@@ -1,0 +1,112 @@
+Simple Recycler View
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 1:
+Create a new project and name it has Recycler view
+Implement the dependency for the recycler view and the card view
+
+//Code in main_activity.xml file//
+<LinearLayout>
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Recycler View"
+    android:gravity="center"
+    android:textSize="30sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+step 2:Create a New Layout Resource file and name it data_list
+
+//code in the  Data_list file//
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/image1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sample Text"
+        android:layout_weight="1"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"/>
+
+</LinearLayout>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step3:
+Code in the mainActivity.class java file
+//Code inside onCreate Method//
+
+RecyclerView recyclerlist = (RecyclerView)findViewById(R.id.recyclerlist);
+        recyclerlist.setLayoutManager(new LinearLayoutManager(this));
+        String[] texts={"Java","Javascript","C","C++","Data Structure",
+                ".net","openGl","python","html","xml","php","Java","Javascript","C","C++","Data Structure",
+                ".net","openGl","python","html","xml","php"};
+        recyclerlist.setAdapter(new DataAdapter(texts));
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Step 4:
+Create a New class and name it has DataAdapter and extend with RecyclerView.Adapter<DataAdapter.DataViewHolder> and right click and select Implement methods
+//Code in the DataAdapter//
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataViewHolder>
+{
+    private String[] data;
+    //This gives the data can be showed in the Recycler view//
+    public DataAdapter(String[] data)
+    {
+        this.data=data;
+    }
+
+    //Creates the view holder and stores the view inside it //
+    @NonNull
+    @Override
+    public DataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        LayoutInflater inflater=LayoutInflater.from(parent.getContext());
+        View view=inflater.inflate(R.layout.list_item_layout,parent,false);
+        return new DataViewHolder(view);
+    }
+
+
+    //Binds the data with the view holder//
+    @Override
+    public void onBindViewHolder(@NonNull DataViewHolder holder, int position)
+    {
+        String title=data[position];
+        holder.txt.setText(title);
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return data.length;
+    }
+
+    public class DataViewHolder extends RecyclerView.ViewHolder
+    {
+        ImageView img;
+        TextView txt;
+        public DataViewHolder(@NonNull View itemView)
+        {
+            super(itemView);
+            img=(ImageView) itemView.findViewById(R.id.image1);
+            txt=(TextView) itemView.findViewById(R.id.text1);
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+

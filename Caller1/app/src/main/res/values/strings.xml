@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Caller</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Home">
+        <font size="8">AllCourse</font>
+    </string>
+    <string name="Datascientist">   <font size="8">DataScientist</font></string>
+    <string name="fullstack" >  <font size="8">Fullstack</font> </string>
+    <string name="webapp" >    <font size="8">WebApp</font></string>
+    <string name="devops" >    <font size="8">Devops</font></string>
+</resources>
